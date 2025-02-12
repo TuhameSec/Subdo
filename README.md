@@ -1,7 +1,7 @@
 # Advanced Subdomain Enumeration Toolkit (ASET)
 
 ## Overview
-ASET (Advanced Subdomain Enumeration Toolkit) is a powerful tool for discovering subdomains, performing passive and active enumeration, port scanning, and URL enumeration. It integrates multiple tools to gather comprehensive data about the target domain and organizes the results in a structured format for further analysis.
+Subdo is a powerful tool for discovering subdomains, performing passive and active enumeration, port scanning, and URL enumeration. It integrates multiple tools to gather comprehensive data about the target domain and organizes the results in a structured format for further analysis.
 
 ## Features
 - **Passive Subdomain Enumeration** using tools like `subfinder` and Censys.io.
@@ -47,7 +47,7 @@ ASET (Advanced Subdomain Enumeration Toolkit) is a powerful tool for discovering
 
 ### Basic Usage
 ```bash
-python3 aset.py -d <target-domain>
+python3 subdo.py -d <target-domain>
 ```
 
 Where:
@@ -59,7 +59,7 @@ Where:
 
 ### Example
 ```bash
-python3 aset.py -d example.com -o /path/to/output
+python3 subdo.py -d example.com -o /path/to/output
 ```
 
 This will start the enumeration process for `example.com` and save the results in the specified directory.
@@ -119,4 +119,4 @@ This tool is licensed under the MIT License.
 Feel free to fork the repository and submit pull requests to improve the tool. Contributions are always welcome!
 
 ## Author
-This tool was created by [Your Name/Organization].
+This tool was created by [Shad0Sec].
