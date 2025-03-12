@@ -56,8 +56,8 @@
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/osint-toolkit.git
-   cd osint-toolkit
+   git clone https://github.com/Shad0Sec/Subdo.git
+   cd Subdo
    ```
 
 2. **Install Python Dependencies**:
@@ -90,7 +90,7 @@
 Run the toolkit using Python with command-line arguments:
 
 ```bash
-python osint_toolkit.py -d <domain> [options]
+python Subdo.py -d <domain> [options]
 ```
 
 ### Command-Line Arguments
@@ -127,17 +127,17 @@ Create a `config.json` file to specify wordlists and API keys:
 ### Examples
 1. **Basic Passive Enumeration**:
    ```bash
-   python osint_toolkit.py -d example.com
+   python Subdo.py -d example.com
    ```
 
 2. **Full Recon with Active Scanning**:
    ```bash
-   python osint_toolkit.py -d example.com -o ./results --active --brute --config config.json
+   python Subdo.py -d example.com -o ./results --active --brute --config config.json
    ```
 
 3. **With API Keys**:
    ```bash
-   python osint_toolkit.py -d example.com --vt-key YOUR_VT_KEY --wpscan-key YOUR_WPSCAN_KEY
+   python Subdo.py -d example.com --vt-key YOUR_VT_KEY --wpscan-key YOUR_WPSCAN_KEY
    ```
 
 ---
