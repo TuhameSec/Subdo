@@ -1,0 +1,14 @@
+{
+    "wordlists": {
+        "resolvers": "/path/to/resolvers.txt",
+        "dns": "/path/to/dns_wordlist.txt",
+        "lfi": "/path/to/lfi_payloads.txt",
+        "dir": "/path/to/dir_wordlist.txt",
+        "parameters": "/usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt"
+    },
+    "api_keys": {
+        "virustotal": "your_vt_key",
+        "alienvault": "your_av_key",
+        "wpscan": "your_wpscan_key"
+    }
+}

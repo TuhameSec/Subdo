@@ -1,122 +1,231 @@
+
 # SUBDO
 
-## Overview
-Subdo is a powerful tool for discovering subdomains, performing passive and active enumeration, port scanning, and URL enumeration. It integrates multiple tools to gather comprehensive data about the target domain and organizes the results in a structured format for further analysis.
+## OSINT Toolkit
+
+**Advanced OSINT Toolkit for Reconnaissance**  
+**Version: 2.1**  
+**Description:** A powerful Python-based toolkit designed for subdomain enumeration, IP discovery, vulnerability scanning, and reconnaissance tasks. It integrates various OSINT techniques and tools to provide comprehensive insights into a target domain.
+
+---
 
 ## Features
-- **Passive Subdomain Enumeration** using tools like `subfinder` and Censys.io.
-- **Active Subdomain Enumeration** with `massdns` for high-performance DNS resolution.
-- **Port Scanning** with `masscan` to detect open ports on discovered subdomains.
-- **URL Enumeration** with `waybackurls` and `gau` to gather potential endpoints and historical data.
+
+- **Subdomain Enumeration**: Discover subdomains using tools like `subfinder`, VirusTotal, and AlienVault OTX.
+- **IP Extraction**: Extract IP addresses from VirusTotal, AlienVault OTX, URLScan.io, and Shodan.
+- **Passive URL Fetching**: Retrieve historical URLs from Wayback Machine and passive sources using `katana`.
+- **Active Scanning**: Perform directory bruteforce, XSS testing, LFI testing, and network scanning.
+- **API Integration**: Supports VirusTotal, AlienVault OTX, and WPScan APIs for enriched data collection.
+- **Output Organization**: Results are saved in a structured directory with subfolders for subdomains, IPs, URLs, etc.
+- **Customizable**: Accepts command-line arguments and a configuration file for flexibility.
+
+---
 
 ## Requirements
-- **subfinder**: A fast subdomain discovery tool.
-- **assetfinder**: A tool for finding subdomains of a target domain.
-- **knockpy**: A Python tool for DNS subdomain enumeration.
-- **findomain**: A fast subdomain enumeration tool.
-- **massdns**: A high-performance DNS resolver.
-- **httpx**: A tool for probing HTTP servers.
-- **waybackurls**: A tool to get URLs from the Wayback Machine.
-- **gau**: A tool for gathering URLs from various sources like Wayback Machine, Common Crawl, and more.
+
+### Dependencies
+- **Python**: 3.6 or higher
+- **Python Libraries**:
+  - `requests`
+  - `beautifulsoup4`
+- **External Tools**:
+  - `subfinder`
+  - `httpx-toolkit`
+  - `katana`
+  - `arjun`
+  - `wpscan`
+  - `ffuf`
+  - `nuclei`
+  - `subzy`
+  - `curl`
+  - `gau`
+  - `dirsearch`
+  - `naabu`
+  - `nmap`
+  - `masscan`
+  - `jq` (for JSON parsing)
+
+### API Keys (Optional)
+- VirusTotal API Key
+- AlienVault OTX API Key
+- WPScan API Key
+
+---
 
 ## Installation
 
-1. **Clone the repository:**
+1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Shad0Sec/Subdo.git
-   cd Subdo
+   git clone https://github.com/yourusername/osint-toolkit.git
+   cd osint-toolkit
    ```
 
-2. **Install required dependencies**:
-   Ensure that the following tools are installed and available in your system’s PATH:
-   - `subfinder`
-   - `assetfinder`
-   - `knockpy`
-   - `findomain`
-   - `massdns`
-   - `httpx`
-   - `waybackurls`
-   - `gau`
-   
-   You can install them using the following commands:
+2. **Install Python Dependencies**:
    ```bash
-   sudo apt install subfinder assetfinder knockpy findomain massdns httpx waybackurls gau
+   pip install -r requirements.txt
    ```
+   Create a `requirements.txt` file with:
+   ```
+   requests
+   beautifulsoup4
+   ```
+
+3. **Install External Tools**:
+   Use your package manager (e.g., `apt`, `brew`, or direct downloads) to install the required tools. Example for Ubuntu:
+   ```bash
+   sudo apt update
+   sudo apt install curl jq nmap
+   go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+   go install github.com/projectdiscovery/httpx/cmd/httpx@latest
+   # Install other tools similarly
+   ```
+
+4. **Set Up API Keys** (Optional):
+   Create a `config.json` file or pass keys via command-line arguments (see Usage).
+
+---
 
 ## Usage
 
-### Basic Usage
+Run the toolkit using Python with command-line arguments:
+
 ```bash
-python3 subdo.py -d <target-domain>
+python osint_toolkit.py -d <domain> [options]
 ```
 
-Where:
-- `-d <target-domain>`: The domain you want to enumerate subdomains for.
+### Command-Line Arguments
+| Argument          | Description                                      | Required | Default       |
+|-------------------|--------------------------------------------------|----------|---------------|
+| `-d, --domain`    | Target domain (e.g., `example.com`)             | Yes      | N/A           |
+| `-o, --output-dir`| Output directory                                | No       | `./output`    |
+| `--active`        | Enable active enumeration                       | No       | False         |
+| `--brute`         | Enable brute force enumeration                  | No       | False         |
+| `--config`        | Path to configuration file (JSON)               | No       | None          |
+| `--vt-key`        | VirusTotal API key                              | No       | None          |
+| `--av-key`        | AlienVault OTX API key                          | No       | None          |
+| `--wpscan-key`    | WPScan API key                                  | No       | None          |
 
-### Optional Arguments
-- `-c <config-file>`: Path to a custom configuration file (optional).
-- `-o <output-dir>`: Custom output directory for saving the results (optional).
-
-### Example
-```bash
-python3 subdo.py -d example.com -o /path/to/output
-```
-
-This will start the enumeration process for `example.com` and save the results in the specified directory.
-
-### Phases of Enumeration
-1. **Passive Enumeration**: Using tools like `subfinder` and Censys.io to find subdomains without actively scanning the target.
-2. **Active Enumeration**: Using `massdns` to resolve subdomains to IP addresses.
-3. **Port Scanning**: Using `masscan` to scan discovered IPs for open ports.
-4. **URL Enumeration**: Using `waybackurls` and `gau` to discover URLs and endpoints associated with the target domain.
-
-## Configuration
-The tool uses a default configuration located in the `CONFIG` dictionary. If you need to customize settings, you can:
-- Modify the default configuration in the script.
-- Use the `-c` option to specify a custom JSON configuration file.
-
-### Example of Configuration:
+### Configuration File
+Create a `config.json` file to specify wordlists and API keys:
 ```json
 {
-    "tools_path": {
-        "subfinder": "/usr/local/bin/subfinder",
-        "assetfinder": "/usr/local/bin/assetfinder",
-        "knockpy": "/usr/local/bin/knockpy",
-        "findomain": "/usr/local/bin/findomain",
-        "massdns": "/usr/local/bin/massdns",
-        "httpx": "/usr/local/bin/httpx",
-        "waybackurls": "/usr/local/bin/waybackurls",
-        "gau": "/usr/local/bin/gau"
-    },
     "wordlists": {
-        "dns": "/opt/wordlists/dns.txt",
-        "resolvers": "/opt/wordlists/resolvers.txt"
+        "resolvers": "/path/to/resolvers.txt",
+        "dns": "/path/to/dns_wordlist.txt",
+        "lfi": "/path/to/lfi_payloads.txt",
+        "dir": "/path/to/dir_wordlist.txt",
+        "parameters": "/usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt"
     },
-    "output_dir": "results"
+    "api_keys": {
+        "virustotal": "your_vt_key",
+        "alienvault": "your_av_key",
+        "wpscan": "your_wpscan_key"
+    }
 }
 ```
 
-## API Keys
-You can provide API keys for Censys and GitHub when running the tool:
-- Censys API key (optional)
-- GitHub Token (optional)
+### Examples
+1. **Basic Passive Enumeration**:
+   ```bash
+   python osint_toolkit.py -d example.com
+   ```
 
-These keys can be entered interactively when prompted during execution.
+2. **Full Recon with Active Scanning**:
+   ```bash
+   python osint_toolkit.py -d example.com -o ./results --active --brute --config config.json
+   ```
 
-## Results
-All results will be saved in the `results` directory (or a custom directory if specified). The output is organized into the following subdirectories:
-- `subdomains`: Contains the list of discovered subdomains.
-- `ports`: Contains the IPs and port scan results.
-- `urls`: Contains the discovered URLs.
+3. **With API Keys**:
+   ```bash
+   python osint_toolkit.py -d example.com --vt-key YOUR_VT_KEY --wpscan-key YOUR_WPSCAN_KEY
+   ```
 
-## Troubleshooting
-If you encounter issues with missing dependencies, the tool will notify you of any missing tools and exit. Make sure that all the required tools are installed and available in your system's PATH.
+---
 
-## License
-This tool is licensed under the MIT License.
+## Supported Techniques
+
+### Subdomain Enumeration
+- `subfinder`: Recursive subdomain discovery.
+- VirusTotal API: Subdomains and IPs from domain reports.
+- AlienVault OTX: Subdomains from passive DNS.
+
+### IP Extraction
+- VirusTotal: IPs from domain reports.
+- AlienVault OTX: IPs from URL lists.
+- URLScan.io: IPs from search results.
+- Shodan: IPs from SSL certificate searches.
+
+### Passive URL Fetching
+- `katana`: Passive URLs from Wayback Machine, Common Crawl, and AlienVault.
+- Wayback Machine: Historical URLs via CDX API.
+
+### Active Scanning
+- Directory Bruteforce: `dirsearch` and `ffuf`.
+- XSS Testing: Blind and single XSS checks.
+- LFI Testing: Using `gau` and `ffuf`.
+- Network Scanning: `naabu`, `nmap`, `masscan`.
+- Shodan: SSL certificate searches with HTTP verification.
+- Nmap: SSL certificate inspection on IPs.
+
+### Vulnerability Checks
+- Hidden Parameters: `arjun` with custom wordlists.
+- CORS Misconfiguration: `curl` checks.
+- WordPress Scanning: Aggressive `wpscan`.
+- Subdomain Takeover: `subzy`.
+- JS File Hunting: `katana` and `nuclei`.
+
+---
+
+## Output Structure
+
+Results are saved in the specified output directory (default: `./output`) with the following structure:
+```
+output/
+├── subdomains/        # Subdomain enumeration results
+├── ips/              # Extracted IP addresses
+├── urls/             # Passive and sorted URLs
+├── ports/            # Network scanning results
+├── sensitive_files/  # Sensitive file discoveries
+├── js_files/         # JS file hunting results
+├── cors/             # CORS check results
+├── xss/              # XSS testing results
+├── lfi/              # LFI testing results
+├── dir_brute/        # Directory bruteforce results
+├── shodan/           # Shodan search results
+├── emails/           # (Future use)
+└── social_media/     # (Future use)
+```
+
+---
+
+## Notes
+- **API Keys**: Required for VirusTotal, AlienVault OTX, and WPScan features. Omit them for basic functionality.
+- **Shodan Favicon Search**: Manual step; use `http.favicon.hash:1265477436` in Shodan UI.
+- **Performance**: Active enumeration may take time depending on target size and network conditions.
+- **Error Handling**: Missing tools or invalid inputs will display error messages.
+
+---
 
 ## Contributing
-Feel free to fork the repository and submit pull requests to improve the tool. Contributions are always welcome!
+Feel free to submit issues or pull requests to improve the toolkit. Contributions are welcome!
 
-## Author
-This tool was created by [Shad0Sec].
+---
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+
+## Acknowledgments
+- Built with inspiration from open-source reconnaissance tools.
+- Thanks to the developers of `subfinder`, `katana`, `ffuf`, and other integrated tools.
+
+---
+
+```
+
+### ملاحظات حول ملف README
+1. **التنظيم**: تم تقسيم الملف إلى أقسام واضحة لسهولة القراءة.
+2. **التفاصيل**: يشمل تعليمات التثبيت، الاستخدام، والتقنيات المدعومة مع أمثلة عملية.
+3. **المرونة**: يوضح كيفية استخدام الوسيطات وملف التهيئة معًا.
+4. **التوثيق**: يشرح هيكل الإخراج والملاحظات الهامة للمستخدمين.
