@@ -56,7 +56,7 @@
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Shad0Sec/Subdo.git
+   git https://github.com/TuhameSec/Subdo.git
    cd Subdo
    ```
 
@@ -127,17 +127,17 @@ Create a `config.json` file to specify wordlists and API keys:
 ### Examples
 1. **Basic Passive Enumeration**:
    ```bash
-   python Subdo.py -d example.com
+   python3 Subdo.py -d example.com
    ```
 
 2. **Full Recon with Active Scanning**:
    ```bash
-   python Subdo.py -d example.com -o ./results --active --brute --config config.json
+   python3 Subdo.py -d example.com -o ./results --active --brute --config config.json
    ```
 
 3. **With API Keys**:
    ```bash
-   python Subdo.py -d example.com --vt-key YOUR_VT_KEY --wpscan-key YOUR_WPSCAN_KEY
+   python3 Subdo.py -d example.com --vt-key YOUR_VT_KEY --wpscan-key YOUR_WPSCAN_KEY
    ```
 
 ---
