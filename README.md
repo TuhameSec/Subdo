@@ -188,8 +188,6 @@ output/
 ├── sensitive_files/  # Sensitive file discoveries
 ├── js_files/         # JS file hunting results
 ├── cors/             # CORS check results
-├── xss/              # XSS testing results
-├── lfi/              # LFI testing results
 ├── dir_brute/        # Directory bruteforce results
 ├── shodan/           # Shodan search results
 ├── emails/           # (Future use)
