@@ -1,229 +1,311 @@
+OSINTToolkit
+OSINTToolkit is an advanced, open-source intelligence (OSINT) reconnaissance tool designed to gather comprehensive and accurate data about a target domain. Built for security researchers, penetration testers, and OSINT enthusiasts, it combines multiple data sources, intelligent analysis, and robust error handling to deliver unparalleled results. With features like AI-driven dynamic dork generation, dark web scanning, and interactive dashboards, OSINTToolkit aims to set a new standard in OSINT automation.
+Features
 
-# SUBDO
+Comprehensive Data Collection:
 
-## OSINT Toolkit
+Subdomain enumeration using Subfinder, Amass, and DNS resolvers.
+URL discovery via Katana, Gau, and Wayback Machine CDX API.
+Google dork scanning with dynamic query generation powered by AI.
+Email and social media harvesting with theHarvester.
+GitHub code leak detection for sensitive data.
+IP and port scanning with Shodan, Censys, and BinaryEdge.
+Cloud storage leak detection (AWS S3, Azure, GCP).
+Dark web scanning for hidden services on Tor.
 
-**Advanced OSINT Toolkit for Reconnaissance**  
-**Version: 2.1**  
-**Description:** A powerful Python-based toolkit designed for subdomain enumeration, IP discovery, vulnerability scanning, and reconnaissance tasks. It integrates various OSINT techniques and tools to provide comprehensive insights into a target domain.
 
----
+Intelligent Analysis:
 
-## Features
+AI-based result classification using DistilBERT for prioritizing sensitive findings.
+Dynamic Google dork generation tailored to the target domain.
+Sentiment analysis for social media profiles.
 
-- **Subdomain Enumeration**: Discover subdomains using tools like `subfinder`, VirusTotal, and AlienVault OTX.
-- **IP Extraction**: Extract IP addresses from VirusTotal, AlienVault OTX, URLScan.io, and Shodan.
-- **Passive URL Fetching**: Retrieve historical URLs from Wayback Machine and passive sources using `katana`.
-- **Active Scanning**: Perform directory bruteforce, XSS testing, LFI testing, and network scanning.
-- **API Integration**: Supports VirusTotal, AlienVault OTX, and WPScan APIs for enriched data collection.
-- **Output Organization**: Results are saved in a structured directory with subfolders for subdomains, IPs, URLs, etc.
-- **Customizable**: Accepts command-line arguments and a configuration file for flexibility.
 
----
+Organized Output:
 
-## Requirements
+Structured JSON, Markdown, CSV, and PDF reports.
+Interactive web dashboard built with FastAPI and Plotly for real-time data visualization.
+SQLite database for storing and querying results.
+Customizable report templates with full Arabic language support.
 
-### Dependencies
-- **Python**: 3.6 or higher
-- **Python Libraries**:
-  - `requests`
-  - `beautifulsoup4`
-- **External Tools**:
-  - `subfinder`
-  - `httpx-toolkit`
-  - `katana`
-  - `arjun`
-  - `wpscan`
-  - `ffuf`
-  - `nuclei`
-  - `subzy`
-  - `curl`
-  - `gau`
-  - `dirsearch`
-  - `naabu`
-  - `nmap`
-  - `masscan`
-  - `jq` (for JSON parsing)
 
-### API Keys (Optional)
-- VirusTotal API Key
-- AlienVault OTX API Key
-- WPScan API Key
+Performance and Reliability:
 
----
+Asynchronous processing with asyncio for high-speed data collection.
+Distributed scanning support for large-scale targets (e.g., Kubernetes).
+Smart rate limiting and proxy rotation to bypass API restrictions.
+Self-healing mechanisms to handle tool failures and network issues.
 
-## Installation
 
-1. **Clone the Repository**:
-   ```bash
-   git https://github.com/TuhameSec/Subdo.git
-   cd Subdo
-   ```
+Security and Stealth:
 
-2. **Install Python Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   Create a `requirements.txt` file with:
-   ```
-   requests
-   beautifulsoup4
-   ```
+Stealth mode with Tor and VPN integration for minimal digital footprint.
+Automated vulnerability scanning with Nuclei for discovered URLs.
+Threat intelligence integration with VirusTotal and AlienVault.
 
-3. **Install External Tools**:
-   Use your package manager (e.g., `apt`, `brew`, or direct downloads) to install the required tools. Example for Ubuntu:
-   ```bash
-   sudo apt update
-   sudo apt install curl jq nmap
-   go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-   go install github.com/projectdiscovery/httpx/cmd/httpx@latest
-   # Install other tools similarly
-   ```
 
-4. **Set Up API Keys** (Optional):
-   Create a `config.json` file or pass keys via command-line arguments (see Usage).
 
----
+Installation
+Prerequisites
 
-## Usage
+Operating System: Linux (Ubuntu/Debian recommended) or macOS
+Python: Version 3.8 or higher
+Dependencies:
+Install required tools: subfinder, amass, katana, gau, httpx, theHarvester, nuclei
+Install Tor for dark web scanning (optional)
 
-Run the toolkit using Python with command-line arguments:
 
-```bash
-python Subdo.py -d <domain> [options]
-```
+API Keys (optional but recommended):
+Google Custom Search API (for advanced dork scanning)
+Shodan (for IP/port scanning)
+GitHub (for code leak detection)
+VirusTotal, AlienVault (for threat intelligence)
+Censys, BinaryEdge (for additional IP scanning)
 
-### Command-Line Arguments
-| Argument          | Description                                      | Required | Default       |
-|-------------------|--------------------------------------------------|----------|---------------|
-| `-d, --domain`    | Target domain (e.g., `example.com`)             | Yes      | N/A           |
-| `-o, --output-dir`| Output directory                                | No       | `./output`    |
-| `--active`        | Enable active enumeration                       | No       | False         |
-| `--brute`         | Enable brute force enumeration                  | No       | False         |
-| `--config`        | Path to configuration file (JSON)               | No       | None          |
-| `--vt-key`        | VirusTotal API key                              | No       | None          |
-| `--av-key`        | AlienVault OTX API key                          | No       | None          |
-| `--wpscan-key`    | WPScan API key                                  | No       | None          |
 
-### Configuration File
-Create a `config.json` file to specify wordlists and API keys:
-```json
+
+Setup
+
+Clone the Repository:
+git clone https://github.com/TuhameSec/Subdo.git
+cd Subdo
+
+
+Install Python Dependencies:
+pip install -r requirements.txt
+
+Sample requirements.txt:
+aiohttp==3.8.5
+aiofiles==23.2.1
+jsonschema==4.19.0
+tenacity==8.2.3
+rich==13.5.2
+tabulate==0.9.0
+google-api-python-client==2.97.0
+shodan==1.30.0
+transformers==4.33.0
+fastapi==0.103.1
+uvicorn==0.23.2
+jinja2==3.1.2
+cloud_enum==0.7
+stem==1.8.2
+nuclei==2.9.15
+
+
+Install External Tools:
+# Install Subfinder
+go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+
+# Install Amass
+go install -v github.com/OWASP/Amass/v3/...@master
+
+# Install Katana
+go install github.com/projectdiscovery/katana/cmd/katana@latest
+
+# Install Gau
+go install github.com/lc/gau/v2/cmd/gau@latest
+
+# Install httpx
+go install github.com/projectdiscovery/httpx/cmd/httpx@latest
+
+# Install theHarvester
+pip install theHarvester
+
+# Install Nuclei
+go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
+
+
+Configure API Keys:Create a config.json file in the project root:
 {
-    "wordlists": {
-        "resolvers": "/path/to/resolvers.txt",
-        "dns": "/path/to/dns_wordlist.txt",
-        "lfi": "/path/to/lfi_payloads.txt",
-        "dir": "/path/to/dir_wordlist.txt",
-        "parameters": "/usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt"
+  "wordlists": {
+    "resolvers": "/path/to/resolvers.txt",
+    "dns": "/path/to/dns_wordlist.txt"
+  },
+  "api_keys": {
+    "google_api_key": "YOUR_GOOGLE_API_KEY",
+    "google_cse_id": "YOUR_GOOGLE_CSE_ID",
+    "shodan": "YOUR_SHODAN_API_KEY",
+    "github": "YOUR_GITHUB_API_KEY",
+    "virustotal": "YOUR_VIRUSTOTAL_API_KEY",
+    "alienvault": "YOUR_ALIENVAULT_API_KEY"
+  },
+  "tools": {
+    "subfinder": {
+      "command": "subfinder -d {domain} -all -recursive",
+      "version_check": "subfinder --version",
+      "required": true
     },
-    "api_keys": {
-        "virustotal": "your_vt_key",
-        "alienvault": "your_av_key",
-        "wpscan": "your_wpscan_key"
+    "amass": {
+      "command": "amass enum -d {domain}",
+      "version_check": "amass --version",
+      "required": true
     }
+  },
+  "output_formats": ["json", "markdown", "csv", "pdf"],
+  "stealth_mode": false
 }
-```
 
-### Examples
-1. **Basic Passive Enumeration**:
-   ```bash
-   python3 Subdo.py -d example.com
-   ```
 
-2. **Full Recon with Active Scanning**:
-   ```bash
-   python3 Subdo.py -d example.com -o ./results --active --brute --config config.json
-   ```
+(Optional) Set Up Tor for Dark Web Scanning:
+sudo apt-get install tor
+sudo systemctl start tor
 
-3. **With API Keys**:
-   ```bash
-   python3 Subdo.py -d example.com --vt-key YOUR_VT_KEY --wpscan-key YOUR_WPSCAN_KEY
-   ```
 
----
 
-## Supported Techniques
+Usage
+Run the tool with the following command:
+python subdo.py -d example.com -o ./output --config config.json
 
-### Subdomain Enumeration
-- `subfinder`: Recursive subdomain discovery.
-- VirusTotal API: Subdomains and IPs from domain reports.
-- AlienVault OTX: Subdomains from passive DNS.
+Command-Line Arguments
 
-### IP Extraction
-- VirusTotal: IPs from domain reports.
-- AlienVault OTX: IPs from URL lists.
-- URLScan.io: IPs from search results.
-- Shodan: IPs from SSL certificate searches.
 
-### Passive URL Fetching
-- `katana`: Passive URLs from Wayback Machine, Common Crawl, and AlienVault.
-- Wayback Machine: Historical URLs via CDX API.
 
-### Active Scanning
-- Directory Bruteforce: `dirsearch` and `ffuf`.
-- XSS Testing: Blind and single XSS checks.
-- LFI Testing: Using `gau` and `ffuf`.
-- Network Scanning: `naabu`, `nmap`, `masscan`.
-- Shodan: SSL certificate searches with HTTP verification.
-- Nmap: SSL certificate inspection on IPs.
+Argument
+Description
+Required
+Default
 
-### Vulnerability Checks
-- Hidden Parameters: `arjun` with custom wordlists.
-- CORS Misconfiguration: `curl` checks.
-- WordPress Scanning: Aggressive `wpscan`.
-- Subdomain Takeover: `subzy`.
-- JS File Hunting: `katana` and `nuclei`.
 
----
 
-## Output Structure
+-d, --domain
+Target domain (e.g., example.com)
+Yes
+-
 
-Results are saved in the specified output directory (default: `./output`) with the following structure:
-```
-output/
-├── subdomains/        # Subdomain enumeration results
-├── ips/              # Extracted IP addresses
-├── urls/             # Passive and sorted URLs
-├── ports/            # Network scanning results
-├── sensitive_files/  # Sensitive file discoveries
-├── js_files/         # JS file hunting results
-├── cors/             # CORS check results
-├── dir_brute/        # Directory bruteforce results
-├── shodan/           # Shodan search results
-├── emails/           # (Future use)
-└── social_media/     # (Future use)
-```
 
----
+-o, --output-dir
+Output directory for results
+No
+./output
 
-## Notes
-- **API Keys**: Required for VirusTotal, AlienVault OTX, and WPScan features. Omit them for basic functionality.
-- **Shodan Favicon Search**: Manual step; use `http.favicon.hash:1265477436` in Shodan UI.
-- **Performance**: Active enumeration may take time depending on target size and network conditions.
-- **Error Handling**: Missing tools or invalid inputs will display error messages.
 
----
+--config
+Path to configuration file (JSON)
+No
+-
 
-## Contributing
-Feel free to submit issues or pull requests to improve the toolkit. Contributions are welcome!
 
----
+--active
+Enable active enumeration
+No
+False
 
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
 
----
+--brute
+Enable brute force enumeration
+No
+False
 
-## Acknowledgments
-- Built with inspiration from open-source reconnaissance tools.
-- Thanks to the developers of `subfinder`, `katana`, `ffuf`, and other integrated tools.
 
----
+--vt-key
+VirusTotal API key
+No
+-
 
-```
 
-### ملاحظات حول ملف README
-1. **التنظيم**: تم تقسيم الملف إلى أقسام واضحة لسهولة القراءة.
-2. **التفاصيل**: يشمل تعليمات التثبيت، الاستخدام، والتقنيات المدعومة مع أمثلة عملية.
-3. **المرونة**: يوضح كيفية استخدام الوسيطات وملف التهيئة معًا.
-4. **التوثيق**: يشرح هيكل الإخراج والملاحظات الهامة للمستخدمين.
+--av-key
+AlienVault API key
+No
+-
+
+
+--google-api-key
+Google Custom Search API key
+No
+-
+
+
+--google-cse-id
+Google Custom Search Engine ID
+No
+-
+
+
+--shodan-key
+Shodan API key
+No
+-
+
+
+--github-key
+GitHub API key
+No
+-
+
+
+Example
+python subdo.py -d example.com -o ./results --config config.json --active --google-api-key YOUR_KEY --google-cse-id YOUR_CSE_ID
+
+This command:
+
+Targets example.com.
+Saves results to ./results.
+Uses the provided configuration file.
+Enables active enumeration.
+Uses Google Custom Search API for dork scanning.
+
+Interactive Dashboard
+Start the FastAPI dashboard to visualize results:
+uvicorn subdo:app --host 0.0.0.0 --port 8000
+
+Access the dashboard at http://localhost:8000. Features include:
+
+Real-time result filtering by category (subdomains, URLs, dorks, etc.).
+Interactive charts for data trends (e.g., subdomain count over time).
+Downloadable reports in multiple formats.
+
+Output Structure
+Results are saved in the specified output directory (./output by default) with the following structure:
+output/run_YYYYMMDD_HHMMSS/
+├── subdomains/
+│   ├── subdomains_YYYYMMDD_HHMMSS.txt
+│   ├── subdomains_alive_YYYYMMDD_HHMMSS.txt
+│   └── final_subdomains.txt
+├── urls/
+│   ├── allurls_YYYYMMDD_HHMMSS.txt
+│   ├── gau_output_YYYYMMDD_HHMMSS.txt
+│   └── final_YYYYMMDD_HHMMSS.txt
+├── dorks/
+│   ├── basic_recon_YYYYMMDD_HHMMSS.txt
+│   ├── sensitive_files_YYYYMMDD_HHMMSS.txt
+│   └── ...
+├── js_files/
+│   └── sensitive_YYYYMMDD_HHMMSS.txt
+├── emails/
+├── social_media/
+├── github/
+├── shodan/
+├── cloud_leaks/
+├── dark_web/
+├── vulnerabilities/
+├── results.json
+├── report.md
+├── summary.csv
+├── report.pdf
+└── results.db (SQLite database)
+
+Report Formats
+
+JSON: Structured data with all findings.
+Markdown: Detailed report with collapsible sections for readability.
+CSV: Summary of key metrics (e.g., subdomain count, URLs found).
+PDF: Professional report with customizable templates.
+
+Contributing
+Contributions are welcome! To contribute:
+
+Fork the repository.
+Create a new branch (git checkout -b feature/your-feature).
+Make your changes and commit (git commit -m "Add your feature").
+Push to your branch (git push origin feature/your-feature).
+Open a pull request.
+
+Please ensure your code follows the project's coding standards and includes tests.
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+Disclaimer
+OSINTToolkit is intended for authorized security testing and research purposes only. Unauthorized use against systems or networks without explicit permission is illegal. The developers are not responsible for misuse of the tool.
+Contact
+For questions, bug reports, or feature requests, open an issue on GitHub or contact the maintainers at support@xai.org.
+
+🌟 OSINTToolkit: Turning reconnaissance into an art form. Let's make the competition rethink their career choices! 🍅

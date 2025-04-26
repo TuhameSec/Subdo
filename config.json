@@ -1,14 +1,111 @@
 {
     "wordlists": {
-        "resolvers": "/path/to/resolvers.txt",
-        "dns": "/path/to/dns_wordlist.txt",
-        "lfi": "/path/to/lfi_payloads.txt",
-        "dir": "/path/to/dir_wordlist.txt",
-        "parameters": "/usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt"
+      "resolvers": "/path/to/resolvers.txt",
+      "dns": "/path/to/dns_wordlist.txt"
     },
     "api_keys": {
-        "virustotal": "your_vt_key",
-        "alienvault": "your_av_key",
-        "wpscan": "your_wpscan_key"
-    }
-}
+      "virustotal": "",
+      "alienvault": "",
+      "wpscan": ""
+    },
+    "tools": {
+      "subfinder": {
+        "command": "subfinder -d {domain} -all -recursive",
+        "version_check": "subfinder --version",
+        "fallback": "dig +short {domain}",
+        "required": true
+      },
+      "httpx": {
+        "command": "httpx -ports 80,443,8080,8000,8888 -threads 200",
+        "version_check": "httpx --version",
+        "required": true
+      }
+    },
+    "cdx_api": {
+      "enabled": true,
+      "base_url": "https://web.archive.org/cdx/search/cdx",
+      "params": {
+        "output": "text",
+        "fl": "original",
+        "limit": 10000
+      }
+    },
+    "url_fetcher": {
+      "katana": {
+        "depth": 5,
+        "sources": ["waybackarchive", "commoncrawl", "alienvault"],
+        "exclude_extensions": ["woff", "css", "png", "svg", "jpg", "woff2", "jpeg", "gif"],
+        "flags": ["-kf", "-jc", "-fx"]
+      },
+      "gau": {
+        "status_codes": [200],
+        "file_extensions": ["php", "asp", "aspx", "jspx", "jsp"]
+      },
+      "js_filters": {
+        "content_types": ["application/javascript", "text/javascript"],
+        "sensitive_patterns": ["API_KEY", "api_key", "apikey", "secret", "token", "password"]
+      }
+    },
+    "google_dorks": {
+      "enabled": true,
+      "api_key": "YOUR_GOOGLE_API_KEY",
+      "cse_id": "YOUR_CSE_ID",
+      "queries": {
+        "basic_recon": [
+          "site:{domain} -www -shop -share -ir -mfa",
+          "site:{domain} ext:php inurl:?",
+          "site:{domain} inurl:api | site:*/rest | site:*/v1 | site:*/v2 | site:*/v3"
+        ],
+        "sensitive_files": [
+          "site:'{domain}' ext:log | ext:txt | ext:conf | ext:cnf | ext:ini | ext:env | ext:sh | ext:bak | ext:backup | ext:swp | ext:old | ext:~ | ext:git | ext:svn | ext:htpasswd | ext:htaccess | ext:json",
+          "inurl:conf | inurl:env | inurl:cgi | inurl:bin | inurl:etc | inurl:root | inurl:sql | inurl:backup | inurl:admin | inurl:php site:{domain}"
+        ],
+        "error_pages": [
+          "inurl:'error' | intitle:'exception' | intitle:'failure' | intitle:'server at' | inurl:exception | 'database error' | 'SQL syntax' | 'undefined index' | 'unhandled exception' | 'stack trace' site:{domain}"
+        ],
+        "vulnerable_params": [
+          "inurl:q= | inurl:s= | inurl:search= | inurl:query= | inurl:keyword= | inurl:lang= inurl:& site:{domain}",
+          "inurl:url= | inurl:return= | inurl:next= | inurl:redirect= | inurl:redir= | inurl:ret= | inurl:r2= | inurl:page= inurl:& inurl:http site:{domain}",
+          "inurl:id= | inurl:pid= | inurl:category= | inurl:cat= | inurl:action= | inurl:sid= | inurl:dir= inurl:& site:{domain}",
+          "inurl:http | inurl:url= | inurl:path= | inurl:dest= | inurl:html= | inurl:data= | inurl:domain= | inurl:page= inurl:& site:{domain}",
+          "inurl:include | inurl:dir | inurl:detail= | inurl:file= | inurl:folder= | inurl:inc= | inurl:locate= | inurl:doc= | inurl:conf= inurl:& site:{domain}",
+          "inurl:cmd | inurl:exec= | inurl:query= | inurl:code= | inurl:do= | inurl:run= | inurl:read= | inurl:ping= inurl:& site:{domain}"
+        ],
+        "cloud_storage": [
+          "site:s3.amazonaws.com '{domain}'",
+          "site:blob.core.windows.net '{domain}'",
+          "site:googleapis.com '{domain}'",
+          "site:drive.google.com '{domain}'",
+          "site:dev.azure.com '{domain}'",
+          "site:onedrive.live.com '{domain}'",
+          "site:digitaloceanspaces.com '{domain}'",
+          "site:sharepoint.com '{domain}'",
+          "site:s3-external-1.amazonaws.com '{domain}'",
+          "site:s3.dualstack.us-east-1.amazonaws.com '{domain}'",
+          "site:dropbox.com/s '{domain}'",
+          "site:box.com/s '{domain}'",
+          "site:docs.google.com inurl:'/d/' '{domain}'",
+          "site:jfrog.io '{domain}'",
+          "site:firebaseio.com '{domain}'"
+        ],
+        "code_docs": [
+          "site:pastebin.com '{domain}'",
+          "site:jsfiddle.net '{domain}'",
+          "site:codebeautify.org '{domain}'",
+          "site:codepen.io '{domain}'",
+          "inurl:apidocs | inurl:api-docs | inurl:swagger | inurl:api-explorer site:'{domain}'",
+          "site:openbugbounty.org inurl:reports intext:'{domain}'",
+          "site:groups.google.com '{domain}'"
+        ],
+        "sensitive_content": [
+          "site:{domain} 'choose file'",
+          "inurl:login | inurl:signin | intitle:login | intitle:signin | inurl:secure site:{domain}",
+          "inurl:test | inurl:env | inurl:dev | inurl:staging | inurl:sandbox | inurl:debug | inurl:temp | inurl:internal | inurl:demo site:{domain}",
+          "site:{domain} ext:txt | ext:pdf | ext:xml | ext:xls | ext:xlsx | ext:ppt | ext:pptx | ext:doc | ext:docx",
+          "intext:'confidential' | intext:'Not for Public Release' | intext:'internal use only' | intext:'do not distribute' site:{domain}",
+          "inurl:email= | inurl:phone= | inurl:password= | inurl:secret= inurl:& site:{domain}"
+        ]
+      }
+    },
+    "output_formats": ["json", "markdown", "csv"]
+  }
